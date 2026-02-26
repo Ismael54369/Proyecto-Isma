@@ -1,0 +1,38 @@
+{% extends 'refugio/base.html' %}
+
+{% block content %}
+<style>
+    .hero-pokedex { border: 8px solid #313131; border-radius: 20px; overflow: hidden; background: white; margin-top: 2rem; margin-bottom: 3rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
+    .hero-top { background-color: #e3350d; padding: 60px 20px; text-align: center; border-bottom: 8px solid #313131; position: relative; }
+    .hero-bottom { padding: 50px 20px; background-color: #f2f2f2; text-align: center; }
+    
+    /* El foquito verde de la Pokédex */
+    .pokedex-light { width: 40px; height: 40px; background-color: #28a745; border-radius: 50%; border: 4px solid white; position: absolute; top: 20px; left: 20px; box-shadow: 0 0 15px #28a745; }
+    
+    .btn-pokemon { background-color: #ffcb05; color: #3b4cca; font-weight: bold; border: 4px solid #3b4cca; font-size: 1.5rem; padding: 15px 40px; border-radius: 12px; transition: 0.2s; text-decoration: none; display: inline-block; text-transform: uppercase; }
+    .btn-pokemon:hover { background-color: #3b4cca; color: #ffcb05; border-color: #ffcb05; transform: scale(1.05); }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="hero-pokedex">
+                <div class="hero-top">
+                    <div class="pokedex-light"></div>
+                    <h1 class="display-3 fw-bold text-white mb-3" style="letter-spacing: 2px; text-shadow: 2px 2px 0 #313131;">BIENVENIDO A REFUGIDEX</h1>
+                    <p class="lead text-white fs-3 fw-bold m-0">¡Hazte con todos... los corazones!</p>
+                </div>
+                
+                <div class="hero-bottom">
+                    <h3 class="fw-bold text-secondary mb-4">Encuentra a tu compañero ideal y dale un nuevo hogar.</h3>
+                    <p class="fs-5 text-muted mb-5">Explora nuestra base de datos, revisa los perfiles de los animales que buscan familia o ayuda a los que están en rehabilitación.</p>
+                    
+                    <a href="{% url 'lista_animales' %}" class="btn-pokemon shadow">
+                        ABRIR POKÉDEX
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

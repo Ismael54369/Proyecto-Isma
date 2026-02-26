@@ -1,0 +1,123 @@
+{% extends 'refugio/base.html' %}
+
+{% block content %}
+<style>
+    .pokeball-card { border: 6px solid #313131; border-radius: 20px; overflow: hidden; background: white; }
+    .pokeball-top { background-color: #dc3545; color: white; padding: 20px; text-align: center; border-bottom: 6px solid #313131; }
+    .pokeball-bottom { padding: 30px; background-color: #f2f2f2; }
+    .btn-pokemon { background-color: #ffcb05; color: #dc3545; font-weight: bold; border: 3px solid #dc3545; font-size: 1.2rem; transition: 0.2s; }
+    .btn-pokemon:hover { background-color: #dc3545; color: white; border-color: #313131; }
+    .animal-mini-pic { width: 120px; height: 120px; object-fit: cover; border-radius: 50%; border: 5px solid #dc3545; box-shadow: 0 4px 10px rgba(0,0,0,0.15); background: white; margin-bottom: 20px; }
+    
+    /* Estilos de la pasarela de pago */
+    .payment-box { background: white; border: 2px solid #e0e0e0; border-radius: 10px; padding: 20px; text-align: left; }
+    .nav-tabs .nav-link { color: #6c757d; font-weight: bold; }
+    .nav-tabs .nav-link.active { color: #dc3545; border-bottom: 3px solid #dc3545; background-color: transparent; border-top: none; border-left: none; border-right: none; }
+    .fake-input { border: 1px solid #ced4da; border-radius: 5px; padding: 10px; width: 100%; margin-bottom: 10px; }
+    .fake-input:focus { outline: none; border-color: #dc3545; box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25); }
+    .secure-badge { background-color: #e8f5e9; color: #28a745; border: 1px solid #c8e6c9; border-radius: 5px; padding: 5px 10px; font-size: 0.85em; display: inline-block; margin-bottom: 15px; }
+</style>
+
+<div class="row justify-content-center mt-4 mb-5">
+    <div class="col-md-8 col-lg-7">
+        <a href="{% url 'detalle_animal' animal.id %}" class="btn btn-outline-secondary mb-3 fw-bold">← Volver al perfil</a>
+        
+        <div class="pokeball-card shadow-lg">
+            <div class="pokeball-top">
+                <h2 class="fw-bold m-0 text-white">PASARELA DE DONACIÓN</h2>
+            </div>
+            
+            <div class="pokeball-bottom text-center">
+                {% if animal.foto %}
+                    <img src="{{ animal.foto.url }}" class="animal-mini-pic" alt="{{ animal.nombre }}">
+                {% else %}
+                    <div class="animal-mini-pic d-inline-flex align-items-center justify-content-center bg-secondary text-white fw-bold fs-1 mb-3">?</div>
+                {% endif %}
+                
+                <h4 class="fw-bold">Apoya la recuperación de {{ animal.nombre }}</h4>
+                <p class="text-muted mb-4">Tu aportación ayudará al Profesor Oak a comprar medicinas.</p>
+
+                <form method="post" class="text-start fw-bold text-secondary">
+                    {% csrf_token %}
+                    
+                    <div class="payment-box mb-4 shadow-sm">
+                        <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">1. Detalles de la aportación</h5>
+                        <div class="mb-3">
+                            <label class="form-label text-dark">{{ form.cantidad.label }}</label>
+                            {{ form.cantidad }}
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label text-dark">{{ form.mensaje.label }}</label>
+                            {{ form.mensaje }}
+                        </div>
+                    </div>
+
+                    <div class="payment-box shadow-sm">
+                        <h5 class="fw-bold text-dark border-bottom pb-2 mb-3">2. Método de Pago</h5>
+                        <div class="text-center mb-3">
+                            <span class="secure-badge">🔒 Conexión SSL Cifrada (Entorno de Simulación)</span>
+                        </div>
+
+                        <ul class="nav nav-tabs mb-3" id="paymentTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="card-tab" data-bs-toggle="tab" data-bs-target="#card" type="button" role="tab">💳 Tarjeta</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="bizum-tab" data-bs-toggle="tab" data-bs-target="#bizum" type="button" role="tab">📱 Bizum</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="paypal-tab" data-bs-toggle="tab" data-bs-target="#paypal" type="button" role="tab">🅿️ PayPal</button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content" id="paymentTabsContent">
+                            
+                            <div class="tab-pane fade show active" id="card" role="tabpanel">
+                                <label class="text-muted small">Titular de la tarjeta</label>
+                                <input type="text" class="fake-input" placeholder="Ej: Ash Ketchum">
+                                
+                                <label class="text-muted small">Número de la tarjeta</label>
+                                <input type="text" class="fake-input" placeholder="0000 0000 0000 0000" maxlength="19">
+                                
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="text-muted small">Caducidad</label>
+                                        <input type="text" class="fake-input" placeholder="MM/AA" maxlength="5">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="text-muted small">CVC</label>
+                                        <input type="text" class="fake-input" placeholder="123" maxlength="3">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="bizum" role="tabpanel">
+                                <div class="text-center py-3">
+                                    <p class="text-muted">Introduce tu número de teléfono vinculado a Bizum. Recibirás una notificación en tu app bancaria para autorizar el pago.</p>
+                                    <label class="text-muted small text-start w-100">Número de móvil</label>
+                                    <input type="tel" class="fake-input fw-bold" placeholder="+34 600 000 000">
+                                </div>
+                            </div>
+
+                            <div class="tab-pane fade" id="paypal" role="tabpanel">
+                                <div class="text-center py-4">
+                                    <p class="text-muted mb-3">Serás redirigido a la plataforma segura de PayPal para completar tu donación.</p>
+                                    <div class="d-inline-block px-4 py-2 bg-light border rounded text-primary fw-bold">
+                                        Conectar con PayPal ↗
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-pokemon py-3 fs-4 shadow">❤️ CONFIRMAR PAGO</button>
+                        <small class="text-center text-muted mt-2">Al hacer clic, aceptas los términos y condiciones de la Refugidex.</small>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

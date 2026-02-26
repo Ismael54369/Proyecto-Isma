@@ -1,0 +1,110 @@
+{% extends 'refugio/base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <a href="{% url 'lista_animales' %}" class="btn btn-outline-secondary mb-4">← Volver a la Pokédex</a>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} fw-bold shadow-sm">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="row bg-white rounded shadow-lg overflow-hidden">
+        
+        <div class="col-md-6 p-0 bg-light position-relative" style="min-height: 400px; overflow: hidden;">
+            {% if animal.foto %}
+                <img src="{{ animal.foto.url }}" class="img-fluid img-detalle shadow-sm" alt="{{ animal.nombre }}">
+            {% else %}
+                <div class="d-flex align-items-center justify-content-center h-100 text-muted">
+                    <div class="text-center">
+                        <h3>📷</h3>
+                        <p>Sin fotografía</p>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6 p-5">
+            <div class="d-flex justify-content-between align-items-center">
+                <h1 class="fw-bold display-4">{{ animal.nombre }}</h1>
+                <span class="text-muted fs-4">N.º {{ animal.id|stringformat:"03d" }}</span>
+            </div>
+
+            <div class="mb-4 d-flex flex-wrap gap-2 align-items-center">
+                <span class="badge-especie bg-{{ animal.especie.nombre }} fs-5">
+                    {{ animal.especie.nombre }}
+                </span>
+                {% if animal.estado == 'REHAB' %}
+                    <span class="badge bg-danger fs-5">🏥 En Rehabilitación</span>
+                {% elif animal.estado == 'ADOPCION' %}
+                    <span class="badge bg-success fs-5">🏠 Listo para adopción</span>
+                {% else %}
+                    <span class="badge bg-secondary fs-5">Adoptado</span>
+                {% endif %}
+            </div>
+
+            <div class="card bg-light border-0 mb-4">
+                <div class="card-body">
+                    <p class="card-text fs-5">{{ animal.historia }}</p>
+                </div>
+            </div>
+
+            <h5 class="fw-bold">Rasgos y Personalidad</h5>
+            <div class="mb-4">
+                {% for rasgo in animal.rasgos.all %}
+                    <span class="badge bg-secondary rounded-pill p-2 me-1">{{ rasgo.nombre }}</span>
+                {% empty %}
+                    <span class="text-muted small">No se han especificado rasgos.</span>
+                {% endfor %}
+            </div>
+
+            <div class="row mb-4 bg-light rounded p-3 mx-1">
+                <div class="col-6">
+                    <small class="text-muted d-block">Fecha Nacimiento</small>
+                    <strong>{{ animal.fecha_nacimiento|default:"Desconocida" }}</strong>
+                </div>
+                <div class="col-6">
+                    <small class="text-muted d-block">Estado Salud</small>
+                    <div class="progress mt-1" style="height: 10px;">
+                        <div class="progress-bar {% if animal.estado == 'REHAB' %}bg-warning{% else %}bg-success{% endif %}" 
+                             role="progressbar" style="width: {% if animal.estado == 'REHAB' %}40%{% else %}100%{% endif %};">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                {% if animal.estado == 'ADOPCION' %}
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'adoptar_animal' animal.id %}" class="btn btn-primary btn-lg fw-bold py-3" style="background-color: #3b82f6;">
+                            ¡Quiero Adoptar a {{ animal.nombre }}!
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-primary btn-lg fw-bold py-3">
+                            Inicia sesión para adoptar
+                        </a>
+                    {% endif %}
+                
+                {% elif animal.estado == 'REHAB' %}
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'donar_animal' animal.id %}" class="btn btn-danger btn-lg fw-bold py-3">
+                            ❤️ Donar para su tratamiento
+                        </a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="btn btn-outline-danger btn-lg fw-bold py-3">
+                            Inicia sesión para poder donar
+                        </a>
+                    {% endif %}
+                    <p class="text-muted text-center mt-2 small">Este animal necesita recuperarse antes de ser adoptado.</p>
+                
+                {% else %}
+                    <button class="btn btn-secondary btn-lg disabled py-3 fw-bold">Ya ha sido adoptado</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

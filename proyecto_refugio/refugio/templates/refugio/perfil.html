@@ -1,0 +1,99 @@
+{% extends 'refugio/base.html' %}
+
+{% block content %}
+<style>
+    .trainer-card { border: 6px solid #313131; border-radius: 15px; background: white; overflow: hidden; margin-bottom: 2rem; }
+    .trainer-header { background-color: #3b4cca; color: white; padding: 20px; border-bottom: 6px solid #313131; }
+    .request-item { border: 3px solid #e0e0e0; border-radius: 10px; padding: 15px; margin-bottom: 15px; transition: 0.2s; }
+    .request-item:hover { border-color: #3b82f6; background-color: #f8f9fa; }
+    .animal-thumb { width: 60px; height: 60px; object-fit: cover; border-radius: 50%; border: 3px solid #313131; }
+    .badge-estado-PENDIENTE { background-color: #ffcb05; color: #313131; }
+    .badge-estado-APROBADA { background-color: #28a745; color: white; }
+    .badge-estado-RECHAZADA { background-color: #dc3545; color: white; }
+    
+    .donacion-item { border-left: 5px solid #dc3545; background-color: #fffafb; padding: 15px; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+</style>
+
+<div class="row justify-content-center mt-3">
+    <div class="col-lg-10">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}success{% endif %} fw-bold shadow-sm">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="trainer-card shadow-lg">
+            <div class="trainer-header d-flex justify-content-between align-items-center">
+                <h2 class="m-0 fw-bold">FICHA DE ENTRENADOR</h2>
+                <span class="fs-4 fw-bold text-warning">@{{ user.username }}</span>
+            </div>
+            
+            <div class="p-4">
+                <h4 class="fw-bold text-secondary mb-4 border-bottom pb-2">🏠 Tus Solicitudes de Adopción</h4>
+
+                {% if solicitudes %}
+                    {% for solicitud in solicitudes %}
+                        <div class="request-item d-flex align-items-center justify-content-between flex-wrap gap-3">
+                            <div class="d-flex align-items-center gap-3">
+                                {% if solicitud.animal.foto %}
+                                    <img src="{{ solicitud.animal.foto.url }}" class="animal-thumb" alt="{{ solicitud.animal.nombre }}">
+                                {% else %}
+                                    <div class="animal-thumb bg-secondary d-flex justify-content-center align-items-center text-white fw-bold">?</div>
+                                {% endif %}
+                                <div>
+                                    <h5 class="fw-bold m-0">{{ solicitud.animal.nombre }}</h5>
+                                    <small class="text-muted">Enviada el {{ solicitud.fecha_solicitud|date:"d M Y" }}</small>
+                                </div>
+                            </div>
+
+                            <div class="text-center">
+                                <span class="badge badge-estado-{{ solicitud.estado }} fs-6 p-2 rounded-pill border border-dark">
+                                    {{ solicitud.get_estado_display }}
+                                </span>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                {% if solicitud.estado == 'PENDIENTE' %}
+                                    <a href="{% url 'editar_solicitud' solicitud.id %}" class="btn btn-sm btn-outline-primary fw-bold">Editar</a>
+                                    <a href="{% url 'cancelar_solicitud' solicitud.id %}" class="btn btn-sm btn-outline-danger fw-bold">Cancelar</a>
+                                {% else %}
+                                    <span class="text-muted small fw-bold">No modificable</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4 mb-4">
+                        <p class="text-muted">Aún no has enviado ninguna solicitud de adopción.</p>
+                    </div>
+                {% endif %}
+
+                <h4 class="fw-bold text-danger mb-4 mt-5 border-bottom pb-2">❤️ Historial de Apoyo (Pokédólares)</h4>
+                
+                {% if donaciones %}
+                    {% for donacion in donaciones %}
+                        <div class="donacion-item d-flex justify-content-between align-items-center flex-wrap">
+                            <div>
+                                <h5 class="fw-bold text-danger m-0">Aportación para {{ donacion.animal.nombre }}</h5>
+                                <small class="text-muted">{{ donacion.fecha_donacion|date:"d M Y, H:i" }}</small>
+                                {% if donacion.mensaje %}
+                                    <p class="fst-italic text-secondary mt-2 mb-0">"{{ donacion.mensaje }}"</p>
+                                {% endif %}
+                            </div>
+                            <div>
+                                <h3 class="fw-bold text-success m-0">+ {{ donacion.cantidad }} €</h3>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="text-center py-4">
+                        <p class="text-muted">Aún no has realizado ninguna donación para animales en rehabilitación.</p>
+                    </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
