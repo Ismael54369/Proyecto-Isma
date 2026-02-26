@@ -1,0 +1,186 @@
+# 🐾 Refugidex - Proyecto Final Django
+
+Refugidex es una aplicación web de gestión de adopciones de un refugio de animales, diseñada con una estética inmersiva inspirada en la clásica "Pokédex". Este proyecto no solo cumple con los requisitos de un CRUD tradicional, sino que añade una capa de diseño de usuario (UI/UX) premium para hacer la experiencia atractiva, moderna y completamente funcional.
+
+----------
+
+## 📸 Vistazo al Proyecto
+
+`![Vista principal de la pantalla de inicio](assets/captura1_inicio.png)`
+
+`![Vista principal de la barra de busqueda y la "Pokedex"](assets/captura2_principal.png)`
+
+`![Detalle del animal y botones de acción](assets/captura3_detalle.png)`
+
+----------
+
+## ⭐ Características Principales y CRUD
+
+El proyecto cumple con el modelo de operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) mediante vistas propias, garantizando que cada usuario solo pueda interactuar con sus propios registros:
+
+-   **Crear (Create):** Los usuarios autenticados pueden enviar solicitudes de adopción detalladas (vivienda, horas en solitario, otras mascotas) para animales en estado de "Adopción".
+    
+-   **Leer (Read):** Panel privado ("Ficha de Entrenador") donde el usuario visualiza el estado en tiempo real de sus solicitudes y su historial de donaciones económicas.
+    
+-   **Actualizar (Update):** Si la solicitud sigue "PENDIENTE", el usuario puede editar su formulario de adopción.
+    
+-   **Eliminar (Delete):** Cancelación segura de la solicitud de adopción mediante una pantalla de confirmación, eliminando el registro de la base de datos.
+
+`![Panel privado del usuario con sus solicitudes](assets/captura4_perfil.png)`
+
+----------
+
+## 🚀 Funcionalidades Extra (Valor Añadido)
+
+Para dotar al proyecto de un acabado profesional, se han implementado las siguientes mejoras fuera de la rúbrica base:
+
+1.  **Pasarela de Pago Simulada:** Interfaz de donaciones para animales en "Rehabilitación" con pestañas interactivas (Tarjeta, Bizum, PayPal) que demuestran el control del frontend, validando solo los datos necesarios en el backend por motivos de seguridad.
+
+`![Pasarela de donaciones simulada](assets/captura5_pago.png)`
+    
+2.  **Alertas Interactivas (SweetAlert2):** Integración de pop-ups dinámicos de éxito y error mediante JavaScript, sustituyendo las alertas estáticas de Bootstrap.
+
+`![Alerta interactiva](assets/captura6_alerta.png)`
+
+3.  **Buscador Inteligente:** Motor de búsqueda integrado en la carcasa de la Pokédex que filtra la base de datos de animales por nombre (ignorando mayúsculas/minúsculas), complementando los filtros por categoría y estado.
+    
+4.  **Diseño Responsive:** Adaptabilidad total a dispositivos móviles usando la grilla y clases de Bootstrap 5.
+
+----------
+
+## 🛡️ Reglas de Negocio Implementadas (Backend)
+
+Para garantizar la coherencia de los datos y evitar problemas operativos en el refugio, se han validado por código las siguientes reglas de negocio:
+
+-   **Regla 1 (Antispam de Solicitudes):** Un usuario **no puede** enviar una nueva solicitud de adopción para un animal si ya tiene una solicitud previa en estado `PENDIENTE` o `APROBADA` para ese mismo animal. El backend intercepta la petición, bloquea el guardado en base de datos y redirige al usuario con un mensaje de error. _(Validado en views.py)_.
+    
+-   **Regla 2 (Flujo de Estados de Salud):** Un animal que se encuentra en estado `ADOPTADO` no puede pasar directamente al estado `REHAB` (En rehabilitación) desde el panel de administración. Requiere un proceso de devolución previo. _(Validado mediante ValidationError en el método clean del modelo Animal)_.
+    
+-   **Regla 3 (Donaciones restringidas):** El sistema bloquea los intentos de donación económica hacia animales que ya están sanos y listos para adopción. Solo se permiten fondos para la categoría "En Rehabilitación".
+    
+
+----------
+
+## 💻 Tecnologías Utilizadas
+
+**Categoría**
+
+**Tecnología**
+
+**Uso en el Proyecto**
+
+**Backend**
+
+Django 6.x (Python)
+
+Lógica de negocio, ORM, Autenticación, Vistas, Modelos.
+
+**Frontend**
+
+HTML5, CSS3
+
+Estructuración, diseño de la interfaz y customización estilo Pokédex.
+
+**Framework CSS**
+
+Bootstrap 5
+
+Sistema de grid, tarjetas, botones, navbars y diseño responsive.
+
+**Librerías JS**
+
+SweetAlert2
+
+Generación de modales y alertas de sistema atractivas.
+
+**Base de Datos**
+
+SQLite3
+
+Almacenamiento local para desarrollo (Animales, Usuarios, Solicitudes).
+
+----------
+
+## ⚙️ Instrucciones de Instalación y Ejecución
+
+Para desplegar este proyecto en un entorno local, sigue estos pasos desde la terminal de tu sistema:
+
+**1. Clonar el repositorio:**
+
+```
+git clone https://github.com/Ismael54369/Proyecto-Isma
+cd proyecto_refugio
+```
+
+**2. Crear y activar el entorno virtual:**
+
+-   En **Windows**:
+    
+    ```
+    python -m venv venv
+    venv\Scripts\activate
+    ```
+    
+-   En **Mac/Linux**:
+    
+    ```
+    python3 -m venv venv
+    source venv/bin/activate
+    ```
+    
+
+**3. Instalar las dependencias necesarias:**
+
+```
+pip install django pillow
+
+```
+
+**4. Aplicar las migraciones a la base de datos:**
+
+```
+python manage.py makemigrations
+python manage.py migrate
+```
+
+**5. Crear un superusuario (para acceder al panel de administración):**
+
+```
+python manage.py createsuperuser
+```
+
+**6. Levantar el servidor de desarrollo:**
+
+
+```
+python manage.py runserver
+```
+
+_La aplicación estará disponible en `http://127.0.0.1:8000` y el panel de administración en `http://127.0.0.1:8000/admin`._
+
+----------
+
+## 🧪 Guía Rápida de Pruebas (Para el Evaluador)
+
+Dado que la base de datos se entrega vacía por defecto, se recomienda seguir este flujo para testear todas las funcionalidades:
+
+1.  **Poblar la base de datos:** Accede a `/admin` con tu superusuario. Crea 2 "Especies", 3 "Rasgos" y al menos 2 "Animales" (uno en estado _Adopción_ y otro en _Rehabilitación_). Sube una imagen para cada uno.
+    
+2.  **Registro de usuario:** Ve a la web principal (`/`), haz clic en "Registrarse" y crea una cuenta de Entrenador (usuario normal).
+    
+3.  **Probar CRUD (C):** Entra al detalle del animal en "Adopción" e intenta adoptarlo rellenando el formulario.
+    
+4.  **Probar Regla de Negocio:** Vuelve a intentar adoptar al mismo animal. El sistema te bloqueará el acceso.
+    
+5.  **Probar CRUD (R y U):** Ve a "Mi Perfil", revisa que tu solicitud aparece listada y haz clic en "Editar" para modificar tus datos.
+    
+6.  **Probar Donaciones:** Entra al detalle del animal en "Rehabilitación", usa la pasarela de pago y verifica que la transacción aparece en tu Ficha de Entrenador (Mi Perfil).
+    
+7.  **Probar CRUD (D):** Cancela tu solicitud de adopción desde tu perfil y verifica que desaparece.
+
+--- 
+*Desarrollado por Ismael González Tempa.*
+ 
+*"El vínculo entre un Entrenador y su compañero es para siempre. ¡Tenemos que adoptarlos a todos!"* 🔴⚪
+
+ ---
