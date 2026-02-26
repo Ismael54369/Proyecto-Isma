@@ -19,14 +19,20 @@ Refugidex es una aplicación web de gestión de adopciones de un refugio de anim
 El proyecto cumple con el modelo de operaciones **CRUD** (Crear, Leer, Actualizar, Eliminar) mediante vistas propias, garantizando que cada usuario solo pueda interactuar con sus propios registros:
 
 -   **Crear (Create):** Los usuarios autenticados pueden enviar solicitudes de adopción detalladas (vivienda, horas en solitario, otras mascotas) para animales en estado de "Adopción".
-    
+
+<img width="1895" height="1040" alt="Captura de pantalla 2026-02-26 194942" src="https://github.com/user-attachments/assets/d4c01de2-ed5b-4735-9637-5f09eec90151" />
+  
 -   **Leer (Read):** Panel privado ("Ficha de Entrenador") donde el usuario visualiza el estado en tiempo real de sus solicitudes y su historial de donaciones económicas.
-    
--   **Actualizar (Update):** Si la solicitud sigue "PENDIENTE", el usuario puede editar su formulario de adopción.
-    
--   **Eliminar (Delete):** Cancelación segura de la solicitud de adopción mediante una pantalla de confirmación, eliminando el registro de la base de datos.
 
 <img width="1897" height="1036" alt="captura4_perfil" src="https://github.com/user-attachments/assets/35aa5e19-b8cf-46c0-95ce-8c6644f4ba32" />
+    
+-   **Actualizar (Update):** Si la solicitud sigue "PENDIENTE", el usuario puede editar su formulario de adopción.
+
+<img width="1896" height="1037" alt="Captura de pantalla 2026-02-26 194453" src="https://github.com/user-attachments/assets/214d92bd-6d61-4814-9fa8-a5d7c1d6f98f" />
+
+-   **Eliminar (Delete):** Cancelación segura de la solicitud de adopción mediante una pantalla de confirmación, eliminando el registro de la base de datos.
+
+<img width="1919" height="1036" alt="Captura de pantalla 2026-02-26 194647" src="https://github.com/user-attachments/assets/5c517ae6-7444-49d5-b2c5-b554e5152704" />
 
 ----------
 
