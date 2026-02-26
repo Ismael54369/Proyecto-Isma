@@ -6,11 +6,11 @@ Refugidex es una aplicación web de gestión de adopciones de un refugio de anim
 
 ## 📸 Vistazo al Proyecto
 
-`![Vista principal de la pantalla de inicio](assets/captura1_inicio.png)`
+<img width="1897" height="1041" alt="captura1_inicio" src="https://github.com/user-attachments/assets/a74caab8-4a67-48e0-8da4-e905a59ae85b" />
 
-`![Vista principal de la barra de busqueda y la "Pokedex"](assets/captura2_principal.png)`
+<img width="1895" height="1040" alt="captura2_principal" src="https://github.com/user-attachments/assets/e8f2373b-d6cd-48c1-9ef2-2bff0be8b782" />
 
-`![Detalle del animal y botones de acción](assets/captura3_detalle.png)`
+<img width="1895" height="1012" alt="captura3_detalle" src="https://github.com/user-attachments/assets/39263a82-5c05-4d61-8c3f-c88f64e4ef79" />
 
 ----------
 
@@ -26,7 +26,7 @@ El proyecto cumple con el modelo de operaciones **CRUD** (Crear, Leer, Actualiza
     
 -   **Eliminar (Delete):** Cancelación segura de la solicitud de adopción mediante una pantalla de confirmación, eliminando el registro de la base de datos.
 
-`![Panel privado del usuario con sus solicitudes](assets/captura4_perfil.png)`
+<img width="1897" height="1036" alt="captura4_perfil" src="https://github.com/user-attachments/assets/35aa5e19-b8cf-46c0-95ce-8c6644f4ba32" />
 
 ----------
 
@@ -36,11 +36,11 @@ Para dotar al proyecto de un acabado profesional, se han implementado las siguie
 
 1.  **Pasarela de Pago Simulada:** Interfaz de donaciones para animales en "Rehabilitación" con pestañas interactivas (Tarjeta, Bizum, PayPal) que demuestran el control del frontend, validando solo los datos necesarios en el backend por motivos de seguridad.
 
-`![Pasarela de donaciones simulada](assets/captura5_pago.png)`
+<img width="1897" height="1041" alt="captura5_pago" src="https://github.com/user-attachments/assets/7f65f468-c938-4dd9-bded-d26faf3cfdb0" />
     
 2.  **Alertas Interactivas (SweetAlert2):** Integración de pop-ups dinámicos de éxito y error mediante JavaScript, sustituyendo las alertas estáticas de Bootstrap.
 
-`![Alerta interactiva](assets/captura6_alerta.png)`
+<img width="865" height="647" alt="captura6_alerta" src="https://github.com/user-attachments/assets/0f37aead-05c6-4262-8f5c-97fa677e6d06" />
 
 3.  **Buscador Inteligente:** Motor de búsqueda integrado en la carcasa de la Pokédex que filtra la base de datos de animales por nombre (ignorando mayúsculas/minúsculas), complementando los filtros por categoría y estado.
     
